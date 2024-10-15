@@ -1,29 +1,30 @@
 import { useEffect, useState } from "react"
-function Data({index, key}) {
-    const [img, Setimg] = useState(null)
+function Data({id}) {
+    const [img, SetImg] = useState(null)
 
-    async function gatData() {
-        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${index}/`);
-        const data = await response.json()
-        return data.sprites.front_default;
-    }
-    useEffect(() => {
-        async function fetchData() {
-            try {
-                const image = await gatData();
-                Setimg(image)
-            } catch(err) {
-                console.error(err)
-            }
+    async function getData() {
+        try {
+            const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}/`);
+            // if(!response.ok) {
+            //     throw new Error('Network response not ok')
+            // }
+            const data = await response.json()
+            SetImg(data.sprites.front_default)
         }
-        fetchData()
-    }, []);
+        catch(err) {
+            console.error(err)
+        }
+    }
+
+    useEffect(() => {
+        getData()
+    }, [id]);
 
     return (
-        <div key={key}>
+        <div>
             {
                 img ? (
-                    <img src={img} />
+                    <img src={img} alt="pokemon"/>
                 ) :
                 (
                     <p>Loading...</p>
