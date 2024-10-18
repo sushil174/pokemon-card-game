@@ -15,6 +15,7 @@ export default function App() {
         else {
             setVisited([...visited, id])
             setScore((prevScore) => prevScore + 1)
+            shuffleCards()
         }
     }
 
@@ -45,6 +46,22 @@ export default function App() {
         }
     }
 
+    function shuffleCards() {
+        setPokemonList((prevList) => {
+            const shuffled = [...prevList];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        });
+    }
+
+    if(isLoading) {
+        return (
+            <h2>Loading.....</h2>
+        )
+    }
     return (
         <div className="card-container">
             {pokemonList.map((pokemon) => (
