@@ -1,5 +1,6 @@
 import { useState,useEffect } from "react";
 import Card from "./Card";
+import GameOver from "./GameOver";
 export default function App() {
     const [isGameOver, setIsGameOver] = useState(false)
     const [pokemonList, setPokemonList] = useState([])
@@ -10,8 +11,10 @@ export default function App() {
 
     function onClick(id) {
         if(isGameOver || isLoading) return
-        if(visited.includes(id)) 
+        if(visited.includes(id)) {
             setIsGameOver(true)
+            updateBestScore()
+        }
         else {
             setVisited([...visited, id])
             setScore((prevScore) => prevScore + 1)
@@ -28,6 +31,10 @@ export default function App() {
             const data = await Promise.all(promises)
             setPokemonList(data.filter(pokemon => pokemon !== null))
             setIsLoading(false)
+        }
+        const storedBestScore = localStorage.getItem('BestScore')
+        if(storedBestScore) {
+            setBestScore(parseInt(storedBestScore, 10))
         }
         getPokemons()
     },[])
@@ -57,17 +64,43 @@ export default function App() {
         });
     }
 
+    function updateBestScore() {
+        if(score > bestScore) {
+            setBestScore(score);
+            localStorage.setItem('BestScore',score);
+        }
+    }
+
+    function onReset() {
+        setVisited([])
+        setScore(0)
+        setIsGameOver(false)
+        shuffleCards()
+    }
+
     if(isLoading) {
         return (
             <h2>Loading.....</h2>
         )
     }
     return (
-        <div className="card-container">
-            {pokemonList.map((pokemon) => (
-                <Card key={pokemon.id} pokemon={pokemon} onClick={onClick} />
-            ))}
-        </div>
+       <main>
+            <div>
+                <p>Best Score : {bestScore}</p>
+                <p>Score : {score}</p>
+            </div>
+            {
+                isGameOver ? (
+                    <GameOver onReset={onReset} />
+                ) : (
+                    <div className="card-container">
+                        {pokemonList.map((pokemon) => (
+                            <Card key={pokemon.id} pokemon={pokemon} onClick={onClick} />
+                        ))}
+                    </div>
+                )
+            }
+       </main>
     )
 
 }
