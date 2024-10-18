@@ -1,4 +1,5 @@
 import { useState,useEffect } from "react";
+import Card from "./Card";
 export default function App() {
     const [isGameOver, setIsGameOver] = useState(false)
     const [pokemonList, setPokemonList] = useState([])
@@ -13,6 +14,7 @@ export default function App() {
             setIsGameOver(true)
         else {
             setVisited([...visited, id])
+            setScore((prevScore) => prevScore + 1)
         }
     }
 
@@ -26,6 +28,7 @@ export default function App() {
             setPokemonList(data.filter(pokemon => pokemon !== null))
             setIsLoading(false)
         }
+        getPokemons()
     },[])
     
     async function getPokemon(id) {
@@ -41,5 +44,13 @@ export default function App() {
             return null
         }
     }
+
+    return (
+        <div className="card-container">
+            {pokemonList.map((pokemon) => (
+                <Card key={pokemon.id} pokemon={pokemon} onClick={onClick} />
+            ))}
+        </div>
+    )
 
 }
