@@ -12,24 +12,26 @@ export default function App() {
     const [score, setScore] = useState(0)
     const [visited, setVisited] = useState([])
     const [win, setWin] = useState(false)
+    const [level, setLevel] = useState(1)
 
     function onClick(id) {
         if(isGameOver || isLoading) return
         if(visited.includes(id)) {
             setIsGameOver(true)
+            setLevel(1)
             setBestScore(updateBestScore(score,bestScore))
         }
         else {
-            setVisited([...visited, id])
+            const newVisited = [...visited, id]
+            setVisited(newVisited)
             setScore((prevScore) => prevScore + 1)
-            checkWin()
             shuffleCards()
-        }
-    }
-    function checkWin() {
-        if(score === 10) {
-            setWin(true)
-            setIsGameOver(true)
+            if(newVisited.length === pokemonList.length) {
+                setIsGameOver(true)
+                setWin(true)
+                setLevel(prev => prev + 1)
+                setBestScore(updateBestScore(score,bestScore))
+            } 
         }
     }
 
@@ -43,15 +45,18 @@ export default function App() {
     
     async function getPokemons() {
         setIsLoading(true)
-        const promises = Array.from({length:10}, () => {
-            const randomId = Math.floor(Math.random() * 1010) + 1;
-            return getPokemon(randomId)
-        })
+        const pokemonId = new Set()
+        const limit = level * 3
+        while(pokemonId.size < limit) {
+            const randomId = Math.floor(Math.random() * 1010) + 1
+            pokemonId.add(randomId)
+        }
+        const promises = Array.from(pokemonId).map(id => getPokemon(id))
         const data = await Promise.all(promises)
         setPokemonList(data.filter(pokemon => pokemon !== null))
         setIsLoading(false)
     }
-    
+
     function shuffleCards() {
         setPokemonList((prevList) => shuffleArray(prevList))
     }
@@ -75,6 +80,7 @@ export default function App() {
             <div>
                 <p>Best Score : {bestScore}</p>
                 <p>Score : {score}</p>
+                <p>Level : {level}</p>
             </div>
             {
                 isGameOver ? (

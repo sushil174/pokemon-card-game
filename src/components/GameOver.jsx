@@ -7,8 +7,8 @@ export default function GameOver({onReset, win}) {
             ) : (
                 <h2>Game Over</h2>
             )}
-            
-            <button onClick={onReset}>Reset</button>
+
+            <button onClick={onReset}>{win ? "Next Level" : "Play Again"}</button>
         </div>
     )
 }
