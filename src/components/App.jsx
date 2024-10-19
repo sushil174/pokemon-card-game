@@ -34,23 +34,24 @@ export default function App() {
     }
 
     useEffect(() => {
-        async function getPokemons() {
-            const promises = Array.from({length:10}, () => {
-                const randomId = Math.floor(Math.random() * 1010) + 1;
-                return getPokemon(randomId)
-            })
-            const data = await Promise.all(promises)
-            setPokemonList(data.filter(pokemon => pokemon !== null))
-            setIsLoading(false)
-        }
+        getPokemons()
         const storedBestScore = localStorage.getItem('BestScore')
         if(storedBestScore) {
             setBestScore(parseInt(storedBestScore, 10))
         }
-        getPokemons()
     },[])
     
-
+    async function getPokemons() {
+        setIsLoading(true)
+        const promises = Array.from({length:10}, () => {
+            const randomId = Math.floor(Math.random() * 1010) + 1;
+            return getPokemon(randomId)
+        })
+        const data = await Promise.all(promises)
+        setPokemonList(data.filter(pokemon => pokemon !== null))
+        setIsLoading(false)
+    }
+    
     function shuffleCards() {
         setPokemonList((prevList) => shuffleArray(prevList))
     }
@@ -61,6 +62,7 @@ export default function App() {
         setIsGameOver(false)
         shuffleCards()
         setWin(false)
+        getPokemons()
     }
 
     if(isLoading) {
