@@ -5,7 +5,7 @@ export async function getPokemon(id) {
             throw new Error('Network response not ok !')
         }
         const data = await response.json();
-        return {id:id, name: data.name, imageUrl:data.sprites.front_default};
+        return {id:id, name: data.name, imageUrl:data.sprites.other["official-artwork"].front_default};
     }catch(err) {
         console.error(err)
         return null

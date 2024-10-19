@@ -13,8 +13,14 @@ export default function App() {
     const [visited, setVisited] = useState([])
     const [win, setWin] = useState(false)
     const [level, setLevel] = useState(1)
+    const [flip, setFlip] = useState(false)
+
+    useEffect(() => {
+        setFlip(false)
+    },[pokemonList])
 
     function onClick(id) {
+        setFlip(true)
         if(isGameOver || isLoading) return
         if(visited.includes(id)) {
             setIsGameOver(true)
@@ -25,7 +31,14 @@ export default function App() {
             const newVisited = [...visited, id]
             setVisited(newVisited)
             setScore((prevScore) => prevScore + 1)
-            shuffleCards()
+            
+            setTimeout(() => {
+                shuffleCards()
+                setTimeout(() => {
+                    setFlip(false)
+                },200)
+            },650)
+
             if(newVisited.length === pokemonList.length) {
                 setIsGameOver(true)
                 setWin(true)
@@ -63,11 +76,14 @@ export default function App() {
 
     function onReset() {
         setVisited([])
-        setScore(0)
+        if(!win) {
+            setScore(0)
+        }
         setIsGameOver(false)
         shuffleCards()
         setWin(false)
         getPokemons()
+        setFlip(false)
     }
 
     if(isLoading) {
@@ -88,7 +104,7 @@ export default function App() {
                 ) : (
                     <div className="card-container">
                         {pokemonList.map((pokemon) => (
-                            <Card key={pokemon.id} pokemon={pokemon} onClick={onClick} />
+                            <Card key={pokemon.id} pokemon={pokemon} onClick={onClick} flip={flip}/>
                         ))}
                     </div>
                 )
