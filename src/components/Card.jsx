@@ -1,5 +1,5 @@
 import React from "react";
-
+import '../css/card.css'
 export default function Card({pokemon, onClick}) {
     return (
         <div className="card" onClick={() => onClick(pokemon.id)}>
