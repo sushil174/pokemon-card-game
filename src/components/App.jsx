@@ -1,6 +1,9 @@
 import { useState,useEffect } from "react";
 import Card from "./Card";
 import GameOver from "./GameOver";
+import LoadingScreen from "./Loading";
+import { getPokemon, shuffleArray, updateBestScore } from "./Data";
+
 export default function App() {
     const [isGameOver, setIsGameOver] = useState(false)
     const [pokemonList, setPokemonList] = useState([])
@@ -8,17 +11,25 @@ export default function App() {
     const [bestScore, setBestScore] = useState(0)
     const [score, setScore] = useState(0)
     const [visited, setVisited] = useState([])
+    const [win, setWin] = useState(false)
 
     function onClick(id) {
         if(isGameOver || isLoading) return
         if(visited.includes(id)) {
             setIsGameOver(true)
-            updateBestScore()
+            setBestScore(updateBestScore(score,bestScore))
         }
         else {
             setVisited([...visited, id])
             setScore((prevScore) => prevScore + 1)
+            checkWin()
             shuffleCards()
+        }
+    }
+    function checkWin() {
+        if(score === 10) {
+            setWin(true)
+            setIsGameOver(true)
         }
     }
 
@@ -39,36 +50,9 @@ export default function App() {
         getPokemons()
     },[])
     
-    async function getPokemon(id) {
-        try{
-            const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
-            if(!response.ok) {
-                throw new Error('Network response not ok !')
-            }
-            const data = await response.json();
-            return {id:id, name: data.name, imageUrl:data.sprites.front_default};
-        }catch(err) {
-            console.error(err)
-            return null
-        }
-    }
 
     function shuffleCards() {
-        setPokemonList((prevList) => {
-            const shuffled = [...prevList];
-            for (let i = shuffled.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-            }
-            return shuffled;
-        });
-    }
-
-    function updateBestScore() {
-        if(score > bestScore) {
-            setBestScore(score);
-            localStorage.setItem('BestScore',score);
-        }
+        setPokemonList((prevList) => shuffleArray(prevList))
     }
 
     function onReset() {
@@ -76,11 +60,12 @@ export default function App() {
         setScore(0)
         setIsGameOver(false)
         shuffleCards()
+        setWin(false)
     }
 
     if(isLoading) {
         return (
-            <h2>Loading.....</h2>
+           <LoadingScreen />
         )
     }
     return (
@@ -91,7 +76,7 @@ export default function App() {
             </div>
             {
                 isGameOver ? (
-                    <GameOver onReset={onReset} />
+                    <GameOver onReset={onReset} win={win}/>
                 ) : (
                     <div className="card-container">
                         {pokemonList.map((pokemon) => (

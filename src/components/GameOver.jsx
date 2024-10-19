@@ -1,7 +1,13 @@
-export default function GameOver({onReset}) {
+export default function GameOver({onReset, win}) {
     return (
+
         <div>
-            GameOver 
+            {win ? (
+                <h2>You win !</h2>
+            ) : (
+                <h2>Game Over</h2>
+            )}
+            
             <button onClick={onReset}>Reset</button>
         </div>
     )
