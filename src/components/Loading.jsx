@@ -1,9 +1,8 @@
-
+import '../css/loading.css'
 function LoadingScreen() {
     return (
         <div className="loading-screen">
-            <h1>Loading Pokémon...</h1>
-            <div className="effect loading-effect"></div>
+            <img src="../src/assets/ball.png" alt="loading" />
         </div>
     );
 }

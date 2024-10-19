@@ -8,7 +8,9 @@ export default function Card({pokemon, onClick,flip}) {
                     <img src={pokemon.imageUrl} alt={pokemon.name} />
                     <p>{pokemon.name}</p>
                 </div>
-                <div className="back-face">back</div>
+                <div className="back-face">
+                    <img src="../src/assets/ball.png" alt="" />
+                </div>
             </div>
         </div>
     )
