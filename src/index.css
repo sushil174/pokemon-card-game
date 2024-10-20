@@ -1,11 +1,23 @@
+@font-face {
+    font-family: "myFont";
+    src: url('assets/LuckiestGuy-Regular.ttf');
+}
 body {
-    background-color: #C1E4F6;
+    background-color: #C5CDDE;
+    font-family: "myFont";
+}
+
+button {
+    font-family: "myFont";
 }
 .card-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, 200px);
     grid-template-rows: 250px;
     grid-auto-rows: 250px;
-    gap: 10px;
+    gap: 3em;
 }
 
+main {
+    padding: 1em;
+}

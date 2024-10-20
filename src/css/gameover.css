@@ -1,0 +1,32 @@
+body {
+    margin: 0;
+    padding: 0; 
+}
+.game-over {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.game-over div h2 {
+    font-size: 4rem;
+    border: 20px double black;
+    padding: 10px 1em;
+}
+.game-over div {
+    /* background-color: lightcoral; */
+    padding: 1em 4em;
+    /* font-size: 1.5em; */
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+}
+.game-over div p {
+    margin: 0;
+}
+
+.game-over button {
+    font-size: 1em;
+    padding: 1em 2em;
+}

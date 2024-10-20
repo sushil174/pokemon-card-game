@@ -14,14 +14,14 @@ export default function App() {
     const [win, setWin] = useState(false)
     const [level, setLevel] = useState(1)
     const [flip, setFlip] = useState(false)
-
+    
     useEffect(() => {
         setFlip(false)
     },[pokemonList])
 
     function onClick(id) {
+        if(isGameOver || isLoading ) return
         setFlip(true)
-        if(isGameOver || isLoading) return
         if(visited.includes(id)) {
             setIsGameOver(true)
             setLevel(1)
@@ -36,7 +36,7 @@ export default function App() {
                 shuffleCards()
                 setTimeout(() => {
                     setFlip(false)
-                },200)
+                },100)  
             },650)
 
             if(newVisited.length === pokemonList.length) {
@@ -93,20 +93,22 @@ export default function App() {
     }
     return (
        <main>
-            <div>
-                <p>Best Score : {bestScore}</p>
-                <p>Score : {score}</p>
-                <p>Level : {level}</p>
-            </div>
             {
                 isGameOver ? (
-                    <GameOver onReset={onReset} win={win}/>
+                    <GameOver onReset={onReset} win={win} score={score} bestScore={bestScore} level={level}/>
                 ) : (
-                    <div className="card-container">
-                        {pokemonList.map((pokemon) => (
-                            <Card key={pokemon.id} pokemon={pokemon} onClick={onClick} flip={flip}/>
-                        ))}
-                    </div>
+                    <>
+                        <div>
+                            <p>Best Score : {bestScore}</p>
+                            <p>Score : {score}</p>
+                            <p>Level : {level}</p>
+                        </div>
+                        <div className="card-container">
+                            {pokemonList.map((pokemon) => (
+                                <Card key={pokemon.id} pokemon={pokemon} onClick={onClick} flip={flip}/>
+                            ))}
+                        </div>
+                    </>
                 )
             }
        </main>

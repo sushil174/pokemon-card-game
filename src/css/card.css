@@ -1,3 +1,9 @@
+:root {
+    --front-face : #EEEEFF;
+    --front-face-content :#5AB46A;
+    --back-face : #C5CDDE;
+}
+
 .scene {
     perspective: 600px;
 }
@@ -9,11 +15,39 @@
     transition: transform .6s ease-in-out;
     transform-style: preserve-3d;
 }
-.card img {
-    width: 80%;
-    height: auto;
-}
 
+.front-face p {
+    position: absolute;
+    left: 2%;
+    top:2%;
+    margin: 0;
+    padding: 0;
+    display: none;
+}
+.card img {
+    width: 60%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    /* background-color: lightseagreen; */
+    
+}
+.front-face-content {
+    width: 80%;
+    height: 80%;
+    transform-style: preserve-3d;
+    border: 2px solid var(--front-face-content);
+    margin: 1em;
+    transform: translateZ(50px);
+    border-radius: 10%;
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); */
+
+}
+.front-face img {
+    width: 100%;
+    transform: translateZ(150px);
+    /* overflow: hidden; */
+}
 .front-face, .back-face {
     text-align: center;
     color: white;
@@ -24,24 +58,28 @@
     display: grid;
     place-items: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    transform-style: preserve-3d;
 }
 
 .front-face {
-    background-color: lightcoral;
+    background-color: var(--front-face);
+    /* border: 2px solid rgb(217, 110, 110); */
 }
+
 .back-face {
-    background: lightblue;
+    background: var(--back-face);
     transform: rotateY( 180deg );
 }
 
 .flipped {
-transform: rotateY(180deg);
+    transform: rotateY(180deg);
 }
 
-.scene:hover {
+/* .scene:hover {
     transform: scale(1.05);
     transition: transform 0.2s;
-}
+} */
 
 
 
