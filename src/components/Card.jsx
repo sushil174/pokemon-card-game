@@ -1,5 +1,6 @@
 import React from "react";
 import '../css/card.css'
+import pokemonBall from '../assets/ball.png'
 export default function Card({pokemon, onClick,flip}) {
     return (
         <div className="scene">
@@ -10,7 +11,7 @@ export default function Card({pokemon, onClick,flip}) {
                     </div>
                 </div>
                 <div className="back-face">
-                    <img src='../../public/ball.png' alt=""/>
+                    <img src={pokemonBall} alt=""/>
                 </div>
             </div>
         </div>

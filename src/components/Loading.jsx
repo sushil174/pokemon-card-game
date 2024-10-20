@@ -1,8 +1,9 @@
 import '../css/loading.css'
+import pokemonBall from '../assets/ball.png'
 function LoadingScreen() {
     return (
         <div className="loading-screen">
-            <img src='../../public/ball.png' alt=""/>
+            <img src={pokemonBall} alt=""/>
         </div>
     );
 }
