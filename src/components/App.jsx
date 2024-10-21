@@ -15,9 +15,9 @@ export default function App() {
     const [level, setLevel] = useState(1)
     const [flip, setFlip] = useState(false)
     
-    useEffect(() => {
-        setFlip(false)
-    },[pokemonList])
+    // useEffect(() => {
+    //     setFlip(false)
+    // },[pokemonList])
 
     function onClick(id) {
         if(isGameOver || isLoading ) return
@@ -31,12 +31,15 @@ export default function App() {
             const newVisited = [...visited, id]
             setVisited(newVisited)
             setScore((prevScore) => prevScore + 1)
-            
+            // setTimeout(()=> {
+            //     shuffleCards()
+            //     setFlip(false)
+            // },600)
             setTimeout(() => {
                 shuffleCards()
                 setTimeout(() => {
                     setFlip(false)
-                },100)  
+                },50)  
             },650)
 
             if(newVisited.length === pokemonList.length) {
